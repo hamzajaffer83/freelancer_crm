@@ -10,9 +10,23 @@ use Illuminate\Support\Facades\Log;
 
 class AppSettingController extends Controller
 {
-    /**
-     * Store a newly created resource in storage.
-     */
+
+    public function index(){
+        try {
+            $appSettings = AppSetting::get();
+
+            return response()->json([
+                'message' => 'Here is the list of all app settings',
+                'data' => $appSettings
+            ], 200);
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return response()->json([
+                'message' => 'Internal Server Error'
+            ], 500);
+        }
+    }
+
     public function store(AppSettingRequest $request)
     {
         try {
@@ -32,9 +46,6 @@ class AppSettingController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
         try {
@@ -60,9 +71,6 @@ class AppSettingController extends Controller
         }
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
         try {
