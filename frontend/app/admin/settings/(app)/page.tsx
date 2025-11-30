@@ -35,7 +35,7 @@ async function getData(): Promise<AppSetting[]> {
   ];
 }
 
-export default async function DemoPage() {
+export default async function Page() {
   const data = await getData();
 
   return (

@@ -1,6 +1,5 @@
 import Cookies from "js-cookie";
 import api from "@/lib/api";
-import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 export const handleLogout = async () => {

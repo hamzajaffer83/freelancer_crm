@@ -5,83 +5,15 @@ export const settingSideBarData = [
   },
   {
     title: "Customer Industries",
-    url: "/admin/settings",
+    url: "/admin/settings/customer/industry",
   },
   {
     title: "Customer Source",
-    url: "/admin/settings",
+    url: "/admin/settings/customer/source",
   },
   {
     title: "Customer Status",
-    url: "/admin/settings",
-  },
-  {
-    title: "App Setting",
-    url: "/admin/settings",
-  },
-  {
-    title: "Customer Industries",
-    url: "/admin/settings",
-  },
-  {
-    title: "Customer Source",
-    url: "/admin/settings",
-  },
-  {
-    title: "Customer Status",
-    url: "/admin/settings",
-  },
-  {
-    title: "App Setting",
-    url: "/admin/settings",
-  },
-  {
-    title: "Customer Industries",
-    url: "/admin/settings",
-  },
-  {
-    title: "Customer Source",
-    url: "/admin/settings",
-  },
-  {
-    title: "Customer Status",
-    url: "/admin/settings",
-  },
-  {
-    title: "App Setting",
-    url: "/admin/settings",
-  },
-  {
-    title: "Customer Industries",
-    url: "/admin/settings",
-  },
-  {
-    title: "Customer Source",
-    url: "/admin/settings",
-  },
-  {
-    title: "Customer Status",
-    url: "/admin/settings",
+    url: "/admin/settings/customer/status",
   },
 
-  {
-    title: "Customer Status",
-    url: "/admin/settings",
-  },
-  {
-    title: "App Setting",
-    url: "/admin/settings",
-  },
-  {
-    title: "Customer Industries",
-    url: "/admin/settings",
-  },
-  {
-    title: "Customer Source",
-    url: "/admin/settings",
-  },
-  {
-    title: "Customer Status",
-    url: "/admin/settings",
-  },
 ];

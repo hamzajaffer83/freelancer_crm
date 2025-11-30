@@ -6,3 +6,12 @@ export type AppSetting = {
   created_at?: string
   updated_at?: string
 }
+
+export type CustomerStatus = {
+    id: number;
+    name: string;
+    color: string;
+    active: boolean;
+    created_at?: string;
+    updated_at?: string;
+}
