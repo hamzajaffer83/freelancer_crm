@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\AppSetting;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
@@ -37,6 +38,8 @@ class HandleInertiaRequests extends Middleware
     public function share(Request $request): array
     {
         [$message, $author] = str(Inspiring::quotes()->random())->explode('-');
+    
+        $app_settings = AppSetting::all();
 
         return [
             ...parent::share($request),
@@ -44,6 +47,11 @@ class HandleInertiaRequests extends Middleware
             'quote' => ['message' => trim($message), 'author' => trim($author)],
             'auth' => [
                 'user' => $request->user(),
+            ],
+            'app_settings' => [
+                'app_title' => $app_settings->where('key', 'app_title')->first()->value ?? '',
+                'app_logo' => $app_settings->where('key', 'app_logo')->first()->value ?? '',
+                'favicon' => $app_settings->where('key', 'favicon')->first()->value ?? '',
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
         ];

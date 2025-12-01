@@ -26,6 +26,7 @@ export interface SharedData {
     name: string;
     quote: { message: string; author: string };
     auth: Auth;
+    app_settings: { app_title: string; app_logo: string; favicon: string };
     sidebarOpen: boolean;
     [key: string]: unknown;
 }

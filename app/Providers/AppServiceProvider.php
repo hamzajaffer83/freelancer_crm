@@ -2,7 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\AppSetting;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\ServiceProvider;
+use Inertia\Inertia;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,6 +22,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Inertia::share([
+            'app_settings' => function () {
+                return Cache::rememberForever('app_settings', function () {
+                    // Assuming key/value storage
+                    return AppSetting::all()->pluck('value', 'key')->toArray();
+                });
+            },
+        ]);
     }
 }

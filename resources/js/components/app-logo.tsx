@@ -1,16 +1,28 @@
-import AppLogoIcon from './app-logo-icon';
+import { SharedData } from '@/types';
+import { usePage } from '@inertiajs/react';
+import { useSidebar } from './ui/sidebar';
 
 export default function AppLogo() {
+    const { app_settings } = usePage<SharedData>().props;
+    const { state } = useSidebar();
+
     return (
-        <>
-            <div className="flex aspect-square size-8 items-center justify-center rounded-md bg-sidebar-primary text-sidebar-primary-foreground">
-                <AppLogoIcon className="size-5 fill-current text-white dark:text-black" />
-            </div>
-            <div className="ml-1 grid flex-1 text-left text-sm">
-                <span className="mb-0.5 truncate leading-tight font-semibold">
-                    Laravel Starter Kit
-                </span>
-            </div>
-        </>
+        <div className="flex w-full items-center justify-center gap-4">
+            {state === 'expanded' ? (
+                <img
+                    src={`/storage/${app_settings.app_logo}`}
+                    alt="logo"
+                    className="h-[40px] w-[174px]"
+                />
+            ) : (
+                <img
+                    src={`/storage/${app_settings.favicon}`}
+                    alt="logo"
+                    className="h-[32px] w-[32px]"
+                />
+            )}
+
+            {/* <img src={`/storage/public/${app_settings.app_logo}`} alt="logo" className='h-[40px] w-[174px]' /> */}
+        </div>
     );
 }

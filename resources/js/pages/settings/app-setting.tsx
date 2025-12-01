@@ -44,11 +44,11 @@ export default function AppSettings({
     // PREVIEW STATES
     // --------------------------
     const [logoPreview, setLogoPreview] = useState<string | null>(
-        storedLogo ? `/storage/public/${storedLogo}` : null,
+        storedLogo ? `/storage/${storedLogo}` : null,
     );
 
     const [faviconPreview, setFaviconPreview] = useState<string | null>(
-        storedFavicon ? `/storage/public/${storedFavicon}` : null,
+        storedFavicon ? `/storage/${storedFavicon}` : null,
     );
 
     return (
