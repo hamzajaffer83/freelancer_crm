@@ -30,9 +30,16 @@ Route::middleware('auth')->group(function () {
         ->name('two-factor.show');
 
     Route::prefix('settings')->name('settings.')->group(function () {
-        Route::get('/app', [AppSettingController::class,'index'])->name('app');
-        Route::post('/app-setting-form-store', [AppSettingController::class,'store'])->name('appSettingForm');
-        Route::get('/customer', [CustomerSettingController::class,'index'])->name('customer');
-        Route::post('/store-customer-label', [CustomerSettingController::class,'storeLabel'])->name('storeLabel');
+        Route::get('/app', [AppSettingController::class, 'index'])->name('app');
+        Route::post('/app-setting-form-store', [AppSettingController::class, 'store'])->name('appSettingForm');
+        Route::get('/customer', [CustomerSettingController::class, 'index'])->name('customer');
+        Route::post('/store-customer-label', [CustomerSettingController::class, 'storeLabel'])->name('storeLabel');
+
+        Route::delete('/delete-customer-label/{id}', [CustomerSettingController::class, 'destroyLabel'])
+            ->name('destroyCustomerLabel');
+
+
+        // Get JSON Data
+        Route::get('/get-customer-label-data', [CustomerSettingController::class, 'getCustomerLabelData'])->name('getCustomerLabelData');
     });
 });

@@ -25,12 +25,18 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 export default function AppSettings() {
     const [open, setOpen] = useState<boolean>(false);
+    const [refreshKey, setRefreshKey] = useState<number>(0); // <-- key to force table refresh
     const tabs = [
         { title: 'Labels', source: 'label' },
         { title: 'Source', source: 'source' },
         { title: 'Industry', source: 'industry' },
     ];
     const [selectedTab, setSelectedTab] = useState<string>('label');
+
+    const handleModalClose = () => {
+        setOpen(false);
+        setRefreshKey((prev) => prev + 1);
+    };
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -54,29 +60,37 @@ export default function AppSettings() {
                         </Button>
                     </div>
                     <section className="mt-6">
-                        {selectedTab === 'label' && <LabelTable />}
-                        {selectedTab === 'source' && <SourceTable />}
-                        {selectedTab === 'industry' && <IndustryTable />}
+                        {selectedTab === 'label' && (
+                            <LabelTable key={refreshKey} />
+                        )}
+                        {selectedTab === 'source' && (
+                            <SourceTable key={refreshKey} />
+                        )}
+                        {selectedTab === 'industry' && (
+                            <IndustryTable key={refreshKey} />
+                        )}
                     </section>
                 </div>
             </AppSettingsLayout>
+
+            {/* Modals */}
             <>
                 {selectedTab === 'label' && (
                     <CreateCustomerLabelModal
                         open={open}
-                        setOpenChange={() => setOpen(false)}
+                        setOpenChange={handleModalClose}
                     />
                 )}
                 {selectedTab === 'source' && (
                     <CreateCustomerSourceModal
                         open={open}
-                        setOpenChange={() => setOpen(false)}
+                        setOpenChange={handleModalClose}
                     />
                 )}
                 {selectedTab === 'industry' && (
                     <CreateCustomerIndustryModal
                         open={open}
-                        setOpenChange={() => setOpen(false)}
+                        setOpenChange={handleModalClose}
                     />
                 )}
             </>

@@ -18,7 +18,19 @@ class CustomerSettingController extends Controller
 
     public function getCustomerLabelData(Request $request)
     {
-        //
+        try {
+            $customerLabel = CustomerLabel::get();
+            return response()->json([
+                'success' => true,
+                'data' => $customerLabel,
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Error Store App Setting: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ]);
+        }
     }
 
     public function getCustomerIndustryData(Request $request)
@@ -56,6 +68,18 @@ class CustomerSettingController extends Controller
                 throw $e;
             }
 
+            Log::error('Error Store App Setting: ' . $e->getMessage());
+            return redirect()->back()->with("error", $e->getMessage());
+        }
+    }
+
+    public function destroyLabel(string $id)
+    {
+        try {
+            $label = CustomerLabel::findOrFail($id);
+            $label->delete();
+            return redirect()->back()->with("success", "Customer Label Deleted Successfully");
+        } catch (\Throwable $e) {
             Log::error('Error Store App Setting: ' . $e->getMessage());
             return redirect()->back()->with("error", $e->getMessage());
         }

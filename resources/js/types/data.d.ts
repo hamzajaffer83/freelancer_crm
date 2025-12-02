@@ -1,5 +1,19 @@
 export interface AppSettingData {
-    id: number
-    key: string
-    value: string
+    id: number;
+    key: string;
+    value: string;
+}
+
+export interface CustomerLabelData {
+    id: number;
+    icon: string;
+    name: string;
+    tag_color: string;
+    description?: string;
+    slug?: string;
+    is_active?: boolean;
+    type?: string;
+    sort_order?: number;
+    created_at?: string;
+    updated_at?: string;
 }

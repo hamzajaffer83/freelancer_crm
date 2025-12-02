@@ -11,7 +11,7 @@ import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
 import { Textarea } from '@/components/ui/textarea';
 import { storeLabel } from '@/routes/settings';
-import { Form } from '@inertiajs/react';
+import { Form, router } from '@inertiajs/react';
 import { useState } from 'react';
 import { HexColorPicker } from 'react-colorful';
 
@@ -40,7 +40,6 @@ const CreateCustomerLabelModal = ({
                     method="post"
                     onSuccess={() => {
                         setOpenChange(false);
-                        
                     }}
                     resetOnSuccess
                     className="thin-scrollbar flex-1 space-y-4 overflow-y-auto p-6"
