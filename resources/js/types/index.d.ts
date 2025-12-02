@@ -28,6 +28,10 @@ export interface SharedData {
     auth: Auth;
     app_settings: { app_title: string; app_logo: string; favicon: string };
     sidebarOpen: boolean;
+    flash: {
+        success?: string;
+        error?: string;
+    }
     [key: string]: unknown;
 }
 

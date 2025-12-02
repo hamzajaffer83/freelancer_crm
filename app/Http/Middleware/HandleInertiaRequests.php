@@ -38,7 +38,7 @@ class HandleInertiaRequests extends Middleware
     public function share(Request $request): array
     {
         [$message, $author] = str(Inspiring::quotes()->random())->explode('-');
-    
+
         $app_settings = AppSetting::all();
 
         return [
@@ -53,7 +53,11 @@ class HandleInertiaRequests extends Middleware
                 'app_logo' => $app_settings->where('key', 'app_logo')->first()->value ?? '',
                 'favicon' => $app_settings->where('key', 'favicon')->first()->value ?? '',
             ],
-            'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
+            'flash' => [
+                'success' => $request->session()->get('success'),
+                'error' => $request->session()->get('error'),
+            ],
+            'sidebarOpen' => !$request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
         ];
     }
 }

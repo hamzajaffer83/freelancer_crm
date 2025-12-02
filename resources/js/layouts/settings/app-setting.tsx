@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 import { cn, isSameUrl, resolveUrl } from '@/lib/utils';
-import { app } from '@/routes/settings';
+import { app, customer } from '@/routes/settings';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
 import { type PropsWithChildren, useMemo, useState } from 'react';
@@ -15,20 +15,10 @@ const sidebarNavItems: NavItem[] = [
         icon: null,
     },
     {
-        title: 'Profile Settings',
-        href: '/profile',
+        title: 'Customer',
+        href: customer(),
         icon: null,
-    },
-    {
-        title: 'Billing',
-        href: '/billing',
-        icon: null,
-    },
-    {
-        title: 'Teams',
-        href: '/teams',
-        icon: null,
-    },
+    }
 ];
 
 export default function AppSettingsLayout({ children }: PropsWithChildren) {
@@ -90,8 +80,8 @@ export default function AppSettingsLayout({ children }: PropsWithChildren) {
 
                 <Separator className="my-6 lg:hidden" />
 
-                <div className="flex-1 md:max-w-2xl">
-                    <section className="max-w-xl space-y-12">
+                <div className="flex-1 w-full">
+                    <section className="space-y-12">
                         {children}
                     </section>
                 </div>

@@ -167,3 +167,12 @@
     @apply bg-background text-foreground;
     }
 }
+
+* {
+    scrollbar-width: thin;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
