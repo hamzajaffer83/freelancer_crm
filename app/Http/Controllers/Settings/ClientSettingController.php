@@ -25,7 +25,7 @@ class ClientSettingController extends Controller
                 'data' => $clientLabel,
             ]);
         } catch (\Exception $e) {
-            Log::error('Error Store App Setting: ' . $e->getMessage());
+            Log::error('Error getting client labels: ' . $e->getMessage());
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage(),
@@ -47,28 +47,31 @@ class ClientSettingController extends Controller
     {
         try {
             $validated = $request->validate([
-                'name' => ['required', 'string', 'max:255'],
+                'name' => ['required', 'string', 'max:255', 'unique:client_labels,name'],
                 'description' => ['nullable', 'string', 'max:255'],
                 'color' => ['required', 'string', 'max:255'],
             ]);
 
-            $slug = SlugHelper::generate($validated['name'], 'customer_labels', 'slug');
+            $slug = SlugHelper::generate($validated['name'], 'client_labels', 'slug');
 
-            ClientLabel::create([
+            $label = ClientLabel::create([
                 'name' => $validated['name'],
                 'slug' => $slug,
                 'description' => $validated['description'],
                 'tag_color' => $validated['color'],
             ]);
 
-            return redirect()->back()->with("success", "Customer Label Created Successfully");
+            return redirect()->back()->with([
+                "success" => "Client Label Created Successfully",
+                'newlyCreatedData' => $label
+            ]);
 
         } catch (\Throwable $e) {
             if ($e instanceof \Illuminate\Validation\ValidationException) {
                 throw $e;
             }
 
-            Log::error('Error Store App Setting: ' . $e->getMessage());
+            Log::error('Error Store Client Label: ' . $e->getMessage());
             return redirect()->back()->with("error", $e->getMessage());
         }
     }
@@ -78,9 +81,9 @@ class ClientSettingController extends Controller
         try {
             $label = ClientLabel::findOrFail($id);
             $label->delete();
-            return redirect()->back()->with("success", "Customer Label Deleted Successfully");
+            return redirect()->back()->with("success", "Client Label Deleted Successfully");
         } catch (\Throwable $e) {
-            Log::error('Error Store App Setting: ' . $e->getMessage());
+            Log::error('Error deleting  Client Label: ' . $e->getMessage());
             return redirect()->back()->with("error", $e->getMessage());
         }
     }

@@ -1,16 +1,17 @@
 import { Head } from '@inertiajs/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import AppLayout from '@/layouts/app-layout';
 import AppSettingsLayout from '@/layouts/settings/app-setting';
 import { type BreadcrumbItem } from '@/types';
 
-import CreateCustomerIndustryModal from '@/components/modals/client/create-customer-industry-modal';
-import CreateCustomerLabelModal from '@/components/modals/client/create-customer-label-modal';
-import CreateCustomerSourceModal from '@/components/modals/client/create-customer-source-modal';
+import CreateClientIndustryModal from '@/components/modals/client/create-client-industry-modal';
+import CreateClientLabelModal from '@/components/modals/client/create-client-label-modal';
+import CreateClientSourceModal from '@/components/modals/client/create-client-source-modal';
 import TabBar from '@/components/tab-bar';
 import { Button } from '@/components/ui/button';
-import settings from '@/routes/settings';
+import settings, { getClientLabelData } from '@/routes/settings';
+import { ClientLabelData } from '@/types/data';
 import { PlusCircle } from 'lucide-react';
 import IndustryTable from './industry-table';
 import LabelTable from './label-table';
@@ -23,30 +24,37 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function AppSettings() {
-    const [open, setOpen] = useState<boolean>(false);
-    const [refreshKey, setRefreshKey] = useState<number>(0);
-    const tabs = [
-        { title: 'Labels', source: 'label' },
-        { title: 'Source', source: 'source' },
-        { title: 'Industry', source: 'industry' },
-    ];
-    const [selectedTab, setSelectedTab] = useState<string>('label');
+export default function Client() {
+    const [open, setOpen] = useState(false);
+    const [selectedTab, setSelectedTab] = useState('label');
 
-    const handleModalClose = () => {
-        setOpen(false);
-        setRefreshKey((prev) => prev + 1);
+    const [labels, setLabels] = useState<ClientLabelData[]>([]);
+
+    const fetchLabels = async () => {
+        const res = await fetch(getClientLabelData().url);
+        const data = await res.json();
+        if (data.success) setLabels(data.data);
     };
+
+    useEffect(() => {
+        fetchLabels();
+    }, []);
+
+    const handleModalClose = () => setOpen(false);
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Customer settings" />
+            <Head title="Client settings" />
 
             <AppSettingsLayout>
                 <div>
                     <div className="flex w-full justify-between border-b">
                         <TabBar
-                            tabs={tabs}
+                            tabs={[
+                                { title: 'Labels', source: 'label' },
+                                { title: 'Source', source: 'source' },
+                                { title: 'Industry', source: 'industry' },
+                            ]}
                             selectedTab={selectedTab}
                             setSelectedTab={setSelectedTab}
                         />
@@ -59,36 +67,40 @@ export default function AppSettings() {
                             Create
                         </Button>
                     </div>
+
                     <section className="mt-6">
                         {selectedTab === 'label' && (
-                            <LabelTable key={refreshKey} />
+                            <LabelTable labels={labels} setLabels={setLabels} />
                         )}
-                        {selectedTab === 'source' && (
-                            <SourceTable key={refreshKey} />
-                        )}
-                        {selectedTab === 'industry' && (
-                            <IndustryTable key={refreshKey} />
-                        )}
+
+                        {selectedTab === 'source' && <SourceTable />}
+
+                        {selectedTab === 'industry' && <IndustryTable />}
                     </section>
                 </div>
             </AppSettingsLayout>
 
-            {/* Modals */}
+            {/* MODALS */}
             <>
                 {selectedTab === 'label' && (
-                    <CreateCustomerLabelModal
+                    <CreateClientLabelModal
                         open={open}
                         setOpenChange={handleModalClose}
+                        onCreated={(newLabel) =>
+                            setLabels((prev) => [...prev, newLabel])
+                        }
                     />
                 )}
+
                 {selectedTab === 'source' && (
-                    <CreateCustomerSourceModal
+                    <CreateClientSourceModal
                         open={open}
                         setOpenChange={handleModalClose}
                     />
                 )}
+
                 {selectedTab === 'industry' && (
-                    <CreateCustomerIndustryModal
+                    <CreateClientIndustryModal
                         open={open}
                         setOpenChange={handleModalClose}
                     />

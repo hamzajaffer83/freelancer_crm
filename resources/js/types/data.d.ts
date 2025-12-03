@@ -4,7 +4,7 @@ export interface AppSettingData {
     value: string;
 }
 
-export interface CustomerLabelData {
+export interface ClientLabelData {
     id: number;
     icon: string;
     name: string;

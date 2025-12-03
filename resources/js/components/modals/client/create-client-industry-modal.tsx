@@ -10,7 +10,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Form } from '@inertiajs/react';
-const CreateCustomerIndustryModal = ({
+const CreateClientIndustryModal = ({
     open,
     setOpenChange,
 }: {
@@ -58,4 +58,4 @@ const CreateCustomerIndustryModal = ({
     );
 };
 
-export default CreateCustomerIndustryModal;
+export default CreateClientIndustryModal;

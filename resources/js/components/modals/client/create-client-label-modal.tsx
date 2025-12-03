@@ -11,18 +11,20 @@ import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
 import { Textarea } from '@/components/ui/textarea';
 import { storeLabel } from '@/routes/settings';
-import { Form, router } from '@inertiajs/react';
+import { ClientLabelData } from '@/types/data';
+import { Form } from '@inertiajs/react';
 import { useState } from 'react';
 import { HexColorPicker } from 'react-colorful';
 
-const CreateCustomerLabelModal = ({
+const CreateClientLabelModal = ({
     open,
     setOpenChange,
+    onCreated,
 }: {
     open: boolean;
     setOpenChange: (open: boolean) => void;
+    onCreated?: (newLabel: ClientLabelData) => void;
 }) => {
-
     const [color, setColor] = useState<string>('#aabbcc');
     return (
         <Dialog open={open} onOpenChange={setOpenChange}>
@@ -30,7 +32,7 @@ const CreateCustomerLabelModal = ({
                 {/* Header */}
                 <div className="border-b p-6">
                     <DialogHeader>
-                        <DialogTitle>Create Customer Label</DialogTitle>
+                        <DialogTitle>Create Client Label</DialogTitle>
                     </DialogHeader>
                 </div>
 
@@ -38,7 +40,11 @@ const CreateCustomerLabelModal = ({
                 <Form
                     action={storeLabel.url()}
                     method="post"
-                    onSuccess={() => {
+                    onSuccess={({ props }) => {
+                        //@ts-expect-error
+                        const newLabel = props.flash?.newlyCreatedData as ClientLabelData;
+                        console.log(newLabel);
+                        if (newLabel) onCreated?.(newLabel);
                         setOpenChange(false);
                     }}
                     resetOnSuccess
@@ -58,7 +64,7 @@ const CreateCustomerLabelModal = ({
                                         autoFocus
                                         tabIndex={1}
                                     />
-                                     <InputError message={errors.name} />
+                                    <InputError message={errors.name} />
                                 </div>
 
                                 {/* Description */}
@@ -100,7 +106,6 @@ const CreateCustomerLabelModal = ({
                                             className="flex-1"
                                             placeholder="#ff6b6b"
                                         />
-                                        
                                     </div>
 
                                     {/* Color Picker */}
@@ -110,7 +115,6 @@ const CreateCustomerLabelModal = ({
                                         className="!w-full rounded-xl border p-2 shadow-sm"
                                     />
                                     <InputError message={errors.color} />
-
                                 </div>
                             </div>
                             <Button
@@ -129,4 +133,4 @@ const CreateCustomerLabelModal = ({
     );
 };
 
-export default CreateCustomerLabelModal;
+export default CreateClientLabelModal;

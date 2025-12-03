@@ -44,7 +44,7 @@ class AppSettingController extends Controller
                     'image',
                     'max:2048',
                     'mimes:jpeg,png,jpg,gif,svg',
-                    'dimensions:width=32,height=32',
+                    'dimensions:max_width=50,max_height=50,min_width=12,min_height=12',
                 ],
             ]);
 

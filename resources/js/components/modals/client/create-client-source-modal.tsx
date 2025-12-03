@@ -12,7 +12,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Form } from '@inertiajs/react';
 
-const CreateCustomerSourceModal = ({
+const CreateClientSourceModal = ({
     open,
     setOpenChange,
 }: {
@@ -60,4 +60,4 @@ const CreateCustomerSourceModal = ({
     );
 };
 
-export default CreateCustomerSourceModal;
+export default CreateClientSourceModal;
