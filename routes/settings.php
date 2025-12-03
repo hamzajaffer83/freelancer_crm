@@ -33,13 +33,27 @@ Route::middleware('auth')->group(function () {
         Route::post('/app-setting-form-store', [AppSettingController::class, 'store'])->name('appSettingForm');
         Route::get('/client', [ClientSettingController::class, 'index'])->name('client');
         Route::post('/store-client-label', [ClientSettingController::class, 'storeLabel'])->name('storeLabel');
+        Route::post('/store-client-source', [ClientSettingController::class, 'storeSource'])->name('storeSource');
+        Route::post('/store-client-industry', [ClientSettingController::class, 'storeIndustry'])->name('storeIndustry');
+
 
         Route::put('/edit-client-label/{id}', [ClientSettingController::class, 'updateLabel'])->name('updateClientLabel');
         Route::delete('/delete-client-label/{id}', [ClientSettingController::class, 'destroyLabel'])
             ->name('destroyClientLabel');
 
+        Route::put('/edit-client-source/{id}', [ClientSettingController::class, 'updateSource'])->name('updateClientSource');
+        Route::delete('/delete-client-source/{id}', [ClientSettingController::class, 'destroySource'])
+            ->name('destroyClientSource');
+
+        Route::put('/edit-client-industry/{id}', [ClientSettingController::class, 'updateIndustry'])->name('updateClientIndustry');
+        Route::delete('/delete-client-industry/{id}', [ClientSettingController::class, 'destroyIndustry'])
+            ->name('destroyClientIndustry');
+
 
         // Get JSON Data
         Route::get('/get-client-label-data', [ClientSettingController::class, 'getClientLabelData'])->name('getClientLabelData');
+        Route::get('/get-client-source-data', [ClientSettingController::class, 'getClientSourceData'])->name('getClientSourceData');
+        Route::get('/get-client-industry-data', [ClientSettingController::class, 'getClientIndustryData'])->name('getClientIndustryData');
+
     });
 });
