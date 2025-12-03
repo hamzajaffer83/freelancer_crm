@@ -10,18 +10,20 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
 import { Textarea } from '@/components/ui/textarea';
-import { storeIndustry } from '@/routes/settings';
+import { updateClientIndustry } from '@/routes/settings';
 import { ClientIndustryData } from '@/types/data';
 import { Form } from '@inertiajs/react';
 
-const CreateClientIndustryModal = ({
+const EditClientIndustryModal = ({
     open,
     setOpenChange,
-    onCreated,
+    onUpdated,
+    industry,
 }: {
     open: boolean;
     setOpenChange: (open: boolean) => void;
-    onCreated?: (newLabel: ClientIndustryData) => void;
+    onUpdated?: (newLabel: ClientIndustryData) => void;
+    industry: ClientIndustryData;
 }) => {
     return (
         <Dialog open={open} onOpenChange={setOpenChange}>
@@ -32,13 +34,12 @@ const CreateClientIndustryModal = ({
                     </DialogHeader>
                     <div className="flex flex-col gap-3">
                         <Form
-                            action={storeIndustry.url()}
-                            method="post"
+                            action={updateClientIndustry.url(industry.id)}
+                            method="put"
                             onSuccess={({ props }) => {
-                                const newIndustry =
-                                    //@ts-expect-error
-                                    props.flash?.newlyCreatedData;
-                                if (newIndustry) onCreated?.(newIndustry);
+                                //@ts-expect-error
+                                const updatedIndustry = props.flash?.updatedData;
+                                if (updatedIndustry) onUpdated?.(updatedIndustry);
                                 setOpenChange(false);
                             }}
                             resetOnSuccess
@@ -51,6 +52,7 @@ const CreateClientIndustryModal = ({
                                             id="name"
                                             name="name"
                                             placeholder="e.g. Technology, Finance"
+                                            defaultValue={industry.name}
                                             required
                                             autoFocus
                                             tabIndex={1}
@@ -65,6 +67,7 @@ const CreateClientIndustryModal = ({
                                             id="description"
                                             name="description"
                                             placeholder="Write about this industry..."
+                                            defaultValue={industry.description}
                                             tabIndex={2}
                                         />
                                         <InputError
@@ -89,4 +92,4 @@ const CreateClientIndustryModal = ({
     );
 };
 
-export default CreateClientIndustryModal;
+export default EditClientIndustryModal;

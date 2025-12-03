@@ -8,7 +8,7 @@ const TabBar = ({
 }: {
     tabs: { title: string; source: string }[];
     selectedTab: string;
-    setSelectedTab: React.Dispatch<React.SetStateAction<string>>;
+    setSelectedTab: (newTab: string) => void;
 }) => {
     const activeBarRef = useRef<HTMLDivElement | null>(null);
     const tabsRef = useRef<Record<string, HTMLButtonElement | null>>({});

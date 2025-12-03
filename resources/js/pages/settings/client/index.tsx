@@ -1,4 +1,5 @@
-import { Head } from '@inertiajs/react';
+// Updated code with URL query param syncing for `tab`
+import { Head, usePage } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
 
 import AppLayout from '@/layouts/app-layout';
@@ -10,8 +11,16 @@ import CreateClientLabelModal from '@/components/modals/client/create-client-lab
 import CreateClientSourceModal from '@/components/modals/client/create-client-source-modal';
 import TabBar from '@/components/tab-bar';
 import { Button } from '@/components/ui/button';
-import settings, { getClientLabelData } from '@/routes/settings';
-import { ClientLabelData } from '@/types/data';
+import settings, {
+    getClientIndustryData,
+    getClientLabelData,
+    getClientSourceData,
+} from '@/routes/settings';
+import {
+    ClientIndustryData,
+    ClientLabelData,
+    ClientSourceData,
+} from '@/types/data';
 import { PlusCircle } from 'lucide-react';
 import IndustryTable from './industry-table';
 import LabelTable from './label-table';
@@ -24,12 +33,25 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function Client() {
+export default function Client({ tab }: { tab: string }) {
+    const { url } = usePage();
+
+    // Sync selectedTab with URL value
+    const [selectedTab, setSelectedTab] = useState<string>(tab ?? 'label');
     const [open, setOpen] = useState(false);
-    const [selectedTab, setSelectedTab] = useState<string>('label');
     const [loading, setLoading] = useState<boolean>(false);
 
     const [labels, setLabels] = useState<ClientLabelData[]>([]);
+    const [source, setSource] = useState<ClientSourceData[]>([]);
+    const [industry, setIndustry] = useState<ClientIndustryData[]>([]);
+
+    // Update URL on tab change
+    const changeTab = (newTab: string) => {
+        setSelectedTab(newTab);
+        const base = url.split('?')[0];
+        const newUrl = `${base}?tab=${newTab}`;
+        window.history.replaceState({}, '', newUrl);
+    };
 
     const fetchLabels = async () => {
         setLoading(true);
@@ -39,9 +61,27 @@ export default function Client() {
         setLoading(false);
     };
 
+    const fetchSource = async () => {
+        setLoading(true);
+        const res = await fetch(getClientSourceData().url);
+        const data = await res.json();
+        if (data.success) setSource(data.data);
+        setLoading(false);
+    };
+
+    const fetchIndustry = async () => {
+        setLoading(true);
+        const res = await fetch(getClientIndustryData().url);
+        const data = await res.json();
+        if (data.success) setIndustry(data.data);
+        setLoading(false);
+    };
+
     useEffect(() => {
-        fetchLabels();
-    }, []);
+        if (selectedTab === 'label') fetchLabels();
+        if (selectedTab === 'source') fetchSource();
+        if (selectedTab === 'industry') fetchIndustry();
+    }, [selectedTab]);
 
     const handleModalClose = () => setOpen(false);
 
@@ -59,7 +99,7 @@ export default function Client() {
                                 { title: 'Industry', source: 'industry' },
                             ]}
                             selectedTab={selectedTab}
-                            setSelectedTab={setSelectedTab}
+                            setSelectedTab={changeTab}
                         />
                         <Button
                             variant="outline"
@@ -73,12 +113,28 @@ export default function Client() {
 
                     <section className="mt-6">
                         {selectedTab === 'label' && (
-                            <LabelTable labels={labels} setLabels={setLabels} loading={loading} />
+                            <LabelTable
+                                labels={labels}
+                                setLabels={setLabels}
+                                loading={loading}
+                            />
                         )}
 
-                        {selectedTab === 'source' && <SourceTable />}
+                        {selectedTab === 'source' && (
+                            <SourceTable
+                                source={source}
+                                setSource={setSource}
+                                loading={loading}
+                            />
+                        )}
 
-                        {selectedTab === 'industry' && <IndustryTable />}
+                        {selectedTab === 'industry' && (
+                            <IndustryTable
+                                industry={industry}
+                                setIndustry={setIndustry}
+                                loading={loading}
+                            />
+                        )}
                     </section>
                 </div>
             </AppSettingsLayout>
@@ -99,6 +155,9 @@ export default function Client() {
                     <CreateClientSourceModal
                         open={open}
                         setOpenChange={handleModalClose}
+                        onCreated={(newSource) =>
+                            setSource((prev) => [...prev, newSource])
+                        }
                     />
                 )}
 
@@ -106,6 +165,9 @@ export default function Client() {
                     <CreateClientIndustryModal
                         open={open}
                         setOpenChange={handleModalClose}
+                        onCreated={(newIndustry) =>
+                            setIndustry((prev) => [...prev, newIndustry])
+                        }
                     />
                 )}
             </>

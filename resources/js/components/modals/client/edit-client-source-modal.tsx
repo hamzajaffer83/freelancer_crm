@@ -10,35 +10,37 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
 import { Textarea } from '@/components/ui/textarea';
-import { storeIndustry } from '@/routes/settings';
-import { ClientIndustryData } from '@/types/data';
+import { storeSource, updateClientSource } from '@/routes/settings';
+import { ClientSourceData } from '@/types/data';
 import { Form } from '@inertiajs/react';
 
-const CreateClientIndustryModal = ({
+const EditClientSourceModal = ({
     open,
     setOpenChange,
-    onCreated,
+    onUpdated,
+    source
 }: {
     open: boolean;
     setOpenChange: (open: boolean) => void;
-    onCreated?: (newLabel: ClientIndustryData) => void;
+    onUpdated?: (newLabel: ClientSourceData) => void;
+    source: ClientSourceData;
 }) => {
     return (
         <Dialog open={open} onOpenChange={setOpenChange}>
             <form>
                 <DialogContent className="sm:max-w-[425px]">
                     <DialogHeader>
-                        <DialogTitle>Create Client Industry</DialogTitle>
+                        <DialogTitle>Create Client Source</DialogTitle>
                     </DialogHeader>
                     <div className="flex flex-col gap-3">
                         <Form
-                            action={storeIndustry.url()}
-                            method="post"
+                            action={updateClientSource.url(source.id)}
+                            method="put"
                             onSuccess={({ props }) => {
-                                const newIndustry =
+                                const updatedSource =
                                     //@ts-expect-error
-                                    props.flash?.newlyCreatedData;
-                                if (newIndustry) onCreated?.(newIndustry);
+                                    props.flash?.updatedData;
+                                if (updatedSource) onUpdated?.(updatedSource);
                                 setOpenChange(false);
                             }}
                             resetOnSuccess
@@ -50,7 +52,8 @@ const CreateClientIndustryModal = ({
                                         <Input
                                             id="name"
                                             name="name"
-                                            placeholder="e.g. Technology, Finance"
+                                            placeholder="e.g. Tiktok, Youtube"
+                                            defaultValue={source.name}
                                             required
                                             autoFocus
                                             tabIndex={1}
@@ -64,7 +67,8 @@ const CreateClientIndustryModal = ({
                                         <Textarea
                                             id="description"
                                             name="description"
-                                            placeholder="Write about this industry..."
+                                            placeholder="Write about this source..."
+                                            defaultValue={source.description}
                                             tabIndex={2}
                                         />
                                         <InputError
@@ -89,4 +93,4 @@ const CreateClientIndustryModal = ({
     );
 };
 
-export default CreateClientIndustryModal;
+export default EditClientSourceModal;

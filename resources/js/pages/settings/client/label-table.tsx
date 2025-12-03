@@ -1,4 +1,4 @@
-import EditClientLabelModal from '@/components/modals/client/edit-client-lable-modal';
+import EditClientLabelModal from '@/components/modals/client/edit-client-label-modal';
 import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
 import { destroyClientLabel } from '@/routes/settings';

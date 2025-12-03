@@ -14,6 +14,11 @@ class ClientSource extends Model
         'name',
         'slug',
         'description',
-        'is_active',  
+        'is_active',
     ];
+
+    public function client()
+    {
+        return $this->belongsTo(Client::class, 'source_id');
+    }
 }

@@ -16,4 +16,14 @@ class ClientIndustry extends Model
         'description',
         'is_active',
     ];
+
+    public function client()
+    {
+        return $this->hasMany(Client::class, 'industry_id');
+    }
+
+    public function clientCompanies()
+    {
+        return $this->hasMany(Client::class, 'industry_id');
+    }
 }

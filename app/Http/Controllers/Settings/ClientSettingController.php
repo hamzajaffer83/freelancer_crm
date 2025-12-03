@@ -14,9 +14,17 @@ use Inertia\Inertia;
 
 class ClientSettingController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return Inertia::render("settings/client/index");
+        $tab = $request->input("tab");
+
+        if (!$tab) {
+            $tab = 'label';
+        }
+
+        return Inertia::render("settings/client/index", [
+            "tab" => $tab,
+        ]);
     }
 
     public function getClientLabelData(Request $request)
@@ -190,7 +198,6 @@ class ClientSettingController extends Controller
             $validated = $request->validate([
                 'name' => ['required', 'string', 'max:255', Rule::unique('client_industries', 'name')->ignore($id),],
                 'description' => ['nullable', 'string', 'max:255'],
-                'color' => ['required', 'string', 'max:255'],
             ]);
 
             $industry = ClientIndustry::findOrFail($id);
@@ -236,7 +243,7 @@ class ClientSettingController extends Controller
     {
         try {
             $validated = $request->validate([
-                'icon' => ['required'],
+                // 'icon' => ['required'],
                 'name' => ['required', 'string', 'max:255', 'unique:client_sources,name'],
                 'description' => ['nullable', 'string', 'max:255'],
             ]);
@@ -244,7 +251,7 @@ class ClientSettingController extends Controller
             $slug = SlugHelper::generate($validated['name'], 'client_sources', 'slug');
 
             $source = ClientSource::create([
-                "icon" => $validated['icon'],
+                // "icon" => $validated['icon'],
                 'name' => $validated['name'],
                 'slug' => $slug,
                 'description' => $validated['description'],
@@ -268,10 +275,9 @@ class ClientSettingController extends Controller
     {
         try {
             $validated = $request->validate([
-                "icon"=> ["required"],
+                // "icon"=> ["required"],
                 'name' => ['required', 'string', 'max:255', Rule::unique('client_sources', 'name')->ignore($id),],
                 'description' => ['nullable', 'string', 'max:255'],
-                'color' => ['required', 'string', 'max:255'],
             ]);
 
             $source = ClientIndustry::findOrFail($id);
@@ -282,7 +288,7 @@ class ClientSettingController extends Controller
                 $slug = SlugHelper::generate($validated['name'], 'client_sources', 'slug');
             }
 
-            $source->icon = $validated['icon'];
+            // $source->icon = $validated['icon'];
             $source->name = $validated['name'];
             $source->slug = $slug;
             $source->description = $validated['description'];

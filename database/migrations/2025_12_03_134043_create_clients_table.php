@@ -1,0 +1,39 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration {
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('clients', function (Blueprint $table) {
+            $table->id();
+            $table->enum('salutation', ['Mr', 'Mrs', 'Miss', 'Dr', 'Sir', 'Madam'])->nullable();
+            $table->string('name');
+            $table->string('email')->unique();
+            $table->string('password')->nullable();
+            $table->string('country')->nullable();
+            $table->string('mobile_number')->nullable();
+            $table->string('profile_pic')->nullable();
+            $table->string('gender')->nullable();
+            $table->foreignId('added_by')->nullable()->constrained('users')->nullOnDelete();
+            $table->foreignId('source_id')->nullable()->constrained('client_sources')->nullOnDelete();
+            $table->foreignId('industry_id')->nullable()->constrained('client_industries')->nullOnDelete();
+            $table->foreignId('label_id')->nullable()->constrained('client_labels')->nullOnDelete();
+            $table->timestamps();
+            $table->softDeletes();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('clients');
+    }
+};

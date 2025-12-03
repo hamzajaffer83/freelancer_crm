@@ -19,4 +19,10 @@ class ClientLabel extends Model
         'sort_order',
         'type',
     ];
+
+    public function clients()
+    {
+        return $this->hasMany(Client::class, 'label_id');
+    }
+
 }

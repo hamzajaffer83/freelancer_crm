@@ -44,8 +44,8 @@ const EditClientLabelModal = ({
                     method="put"
                     onSuccess={({ props }) => {
                         // @ts-expect-error
-                        const newLabel = props.flash?.updatedData as ClientLabelData;
-                        if (newLabel) onUpdated?.(newLabel);
+                        const updatedLabel = props.flash?.updatedData as ClientLabelData;
+                        if (updatedLabel) onUpdated?.(updatedLabel);
                         setOpenChange(false);
                     }}
                     resetOnSuccess
