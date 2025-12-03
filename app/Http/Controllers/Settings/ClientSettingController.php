@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\ClientLabel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 
 class ClientSettingController extends Controller
@@ -64,6 +65,44 @@ class ClientSettingController extends Controller
             return redirect()->back()->with([
                 "success" => "Client Label Created Successfully",
                 'newlyCreatedData' => $label
+            ]);
+
+        } catch (\Throwable $e) {
+            if ($e instanceof \Illuminate\Validation\ValidationException) {
+                throw $e;
+            }
+
+            Log::error('Error Store Client Label: ' . $e->getMessage());
+            return redirect()->back()->with("error", $e->getMessage());
+        }
+    }
+
+    public function updateLabel(Request $request, $id)
+    {
+        try {
+            $validated = $request->validate([
+                'name' => ['required', 'string', 'max:255', Rule::unique('client_labels', 'name')->ignore($id),],
+                'description' => ['nullable', 'string', 'max:255'],
+                'color' => ['required', 'string', 'max:255'],
+            ]);
+
+            $label = ClientLabel::findOrFail($id);
+
+            if ($label->name == $validated['name']) {
+                $slug = $label->slug;
+            } else {
+                $slug = SlugHelper::generate($validated['name'], 'client_labels', 'slug');
+            }
+
+            $label->name = $validated['name'];
+            $label->slug = $slug;
+            $label->description = $validated['description'];
+            $label->tag_color = $validated['color'];
+            $label->save();
+
+            return redirect()->back()->with([
+                "success" => "Client Label Updated Successfully",
+                'updatedData' => $label
             ]);
 
         } catch (\Throwable $e) {

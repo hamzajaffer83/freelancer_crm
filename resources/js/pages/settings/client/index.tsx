@@ -26,14 +26,17 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 export default function Client() {
     const [open, setOpen] = useState(false);
-    const [selectedTab, setSelectedTab] = useState('label');
+    const [selectedTab, setSelectedTab] = useState<string>('label');
+    const [loading, setLoading] = useState<boolean>(false);
 
     const [labels, setLabels] = useState<ClientLabelData[]>([]);
 
     const fetchLabels = async () => {
+        setLoading(true);
         const res = await fetch(getClientLabelData().url);
         const data = await res.json();
         if (data.success) setLabels(data.data);
+        setLoading(false);
     };
 
     useEffect(() => {
@@ -70,7 +73,7 @@ export default function Client() {
 
                     <section className="mt-6">
                         {selectedTab === 'label' && (
-                            <LabelTable labels={labels} setLabels={setLabels} />
+                            <LabelTable labels={labels} setLabels={setLabels} loading={loading} />
                         )}
 
                         {selectedTab === 'source' && <SourceTable />}

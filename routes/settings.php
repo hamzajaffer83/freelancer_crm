@@ -34,6 +34,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/client', [ClientSettingController::class, 'index'])->name('client');
         Route::post('/store-client-label', [ClientSettingController::class, 'storeLabel'])->name('storeLabel');
 
+        Route::put('/edit-client-label/{id}', [ClientSettingController::class, 'updateLabel'])->name('updateClientLabel');
         Route::delete('/delete-client-label/{id}', [ClientSettingController::class, 'destroyLabel'])
             ->name('destroyClientLabel');
 
