@@ -5,9 +5,9 @@ import AppLayout from '@/layouts/app-layout';
 import AppSettingsLayout from '@/layouts/settings/app-setting';
 import { type BreadcrumbItem } from '@/types';
 
-import CreateCustomerIndustryModal from '@/components/modals/customer/create-customer-industry-modal';
-import CreateCustomerLabelModal from '@/components/modals/customer/create-customer-label-modal';
-import CreateCustomerSourceModal from '@/components/modals/customer/create-customer-source-modal';
+import CreateCustomerIndustryModal from '@/components/modals/client/create-customer-industry-modal';
+import CreateCustomerLabelModal from '@/components/modals/client/create-customer-label-modal';
+import CreateCustomerSourceModal from '@/components/modals/client/create-customer-source-modal';
 import TabBar from '@/components/tab-bar';
 import { Button } from '@/components/ui/button';
 import settings from '@/routes/settings';
@@ -19,13 +19,13 @@ import SourceTable from './source-table';
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'App settings',
-        href: settings.customer().url,
+        href: settings.client().url,
     },
 ];
 
 export default function AppSettings() {
     const [open, setOpen] = useState<boolean>(false);
-    const [refreshKey, setRefreshKey] = useState<number>(0); // <-- key to force table refresh
+    const [refreshKey, setRefreshKey] = useState<number>(0);
     const tabs = [
         { title: 'Labels', source: 'label' },
         { title: 'Source', source: 'source' },

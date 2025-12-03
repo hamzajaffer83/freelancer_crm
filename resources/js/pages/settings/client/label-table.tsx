@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
-import { destroyCustomerLabel, getCustomerLabelData } from '@/routes/settings';
+import { destroyClientLabel, getClientLabelData } from '@/routes/settings';
 import { CustomerLabelData } from '@/types/data';
 import { router } from '@inertiajs/react';
 import { Trash2 } from 'lucide-react';
@@ -15,7 +15,7 @@ const LabelTable = () => {
     const fetchLabels = async () => {
         setLoading(true);
         try {
-            const response = await fetch(getCustomerLabelData().url);
+            const response = await fetch(getClientLabelData().url);
             const data = await response.json();
             if (data.success) {
                 setLabels(data.data);
@@ -38,7 +38,7 @@ const LabelTable = () => {
         if (!confirm('Are you sure you want to delete this label?')) return;
 
         try {
-            router.delete(destroyCustomerLabel(id).url);
+            router.delete(destroyClientLabel(id).url);
             toast.success('Label deleted successfully');
             // Update state to remove deleted label
             setLabels((prev) => prev.filter((label) => label.id !== id));

@@ -4,25 +4,25 @@ namespace App\Http\Controllers\Settings;
 
 use App\Helpers\SlugHelper;
 use App\Http\Controllers\Controller;
-use App\Models\CustomerLabel;
+use App\Models\ClientLabel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 
-class CustomerSettingController extends Controller
+class ClientSettingController extends Controller
 {
     public function index()
     {
-        return Inertia::render("settings/customer/index");
+        return Inertia::render("settings/client/index");
     }
 
-    public function getCustomerLabelData(Request $request)
+    public function getClientLabelData(Request $request)
     {
         try {
-            $customerLabel = CustomerLabel::get();
+            $clientLabel = ClientLabel::get();
             return response()->json([
                 'success' => true,
-                'data' => $customerLabel,
+                'data' => $clientLabel,
             ]);
         } catch (\Exception $e) {
             Log::error('Error Store App Setting: ' . $e->getMessage());
@@ -33,12 +33,12 @@ class CustomerSettingController extends Controller
         }
     }
 
-    public function getCustomerIndustryData(Request $request)
+    public function getClientIndustryData(Request $request)
     {
         //
     }
 
-    public function getCustomerSourceData(Request $request)
+    public function getClientSourceData(Request $request)
     {
         //
     }
@@ -54,7 +54,7 @@ class CustomerSettingController extends Controller
 
             $slug = SlugHelper::generate($validated['name'], 'customer_labels', 'slug');
 
-            CustomerLabel::create([
+            ClientLabel::create([
                 'name' => $validated['name'],
                 'slug' => $slug,
                 'description' => $validated['description'],
@@ -76,7 +76,7 @@ class CustomerSettingController extends Controller
     public function destroyLabel(string $id)
     {
         try {
-            $label = CustomerLabel::findOrFail($id);
+            $label = ClientLabel::findOrFail($id);
             $label->delete();
             return redirect()->back()->with("success", "Customer Label Deleted Successfully");
         } catch (\Throwable $e) {

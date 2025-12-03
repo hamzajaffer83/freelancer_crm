@@ -1,8 +1,7 @@
 <?php
 
 use App\Http\Controllers\Settings\AppSettingController;
-use App\Http\Controllers\Settings\CustomerController;
-use App\Http\Controllers\Settings\CustomerSettingController;
+use App\Http\Controllers\Settings\ClientSettingController;
 use App\Http\Controllers\Settings\PasswordController;
 use App\Http\Controllers\Settings\ProfileController;
 use App\Http\Controllers\Settings\TwoFactorAuthenticationController;
@@ -32,14 +31,14 @@ Route::middleware('auth')->group(function () {
     Route::prefix('settings')->name('settings.')->group(function () {
         Route::get('/app', [AppSettingController::class, 'index'])->name('app');
         Route::post('/app-setting-form-store', [AppSettingController::class, 'store'])->name('appSettingForm');
-        Route::get('/customer', [CustomerSettingController::class, 'index'])->name('customer');
-        Route::post('/store-customer-label', [CustomerSettingController::class, 'storeLabel'])->name('storeLabel');
+        Route::get('/client', [ClientSettingController::class, 'index'])->name('client');
+        Route::post('/store-client-label', [ClientSettingController::class, 'storeLabel'])->name('storeLabel');
 
-        Route::delete('/delete-customer-label/{id}', [CustomerSettingController::class, 'destroyLabel'])
-            ->name('destroyCustomerLabel');
+        Route::delete('/delete-client-label/{id}', [ClientSettingController::class, 'destroyLabel'])
+            ->name('destroyClientLabel');
 
 
         // Get JSON Data
-        Route::get('/get-customer-label-data', [CustomerSettingController::class, 'getCustomerLabelData'])->name('getCustomerLabelData');
+        Route::get('/get-client-label-data', [ClientSettingController::class, 'getClientLabelData'])->name('getClientLabelData');
     });
 });

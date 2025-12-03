@@ -11,16 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('customer_labels', function (Blueprint $table) {
+        Schema::create('client_industries', function (Blueprint $table) {
             $table->id();
             $table->string('icon')->nullable();
             $table->string('name')->unique();
-            $table->char('tag_color', 7)->nullable();
             $table->string('slug')->unique();
             $table->text('description')->nullable();
             $table->boolean('is_active')->default(true);
-            $table->unsignedSmallInteger('sort_order')->default(0);
-            $table->string('type')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
@@ -31,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('customer_labels');
+        Schema::dropIfExists('customer_industries');
     }
 };
